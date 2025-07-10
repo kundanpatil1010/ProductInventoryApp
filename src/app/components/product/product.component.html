@@ -1,0 +1,88 @@
+<div class="container">
+  <h1>📦 Product Inventory</h1>
+
+  <!-- Product Form -->
+  <form (ngSubmit)="saveProduct()" #productForm="ngForm">
+    <input
+      [(ngModel)]="model.name"
+      name="name"
+      placeholder="Product Name"
+      required
+      autocomplete="off"
+    />
+    <input
+      [(ngModel)]="model.description"
+      name="description"
+      placeholder="Description"
+      required
+      autocomplete="off"
+    />
+    <input
+      [(ngModel)]="model.price"
+      name="price"
+      type="number"
+      placeholder="Price"
+      required
+      autocomplete="off"
+    />
+    <input
+      [(ngModel)]="model.quantity"
+      name="quantity"
+      type="number"
+      placeholder="Quantity"
+      required
+      autocomplete="off"
+    />
+    <input [(ngModel)]="model.imageUrl" name="imageUrl" placeholder="Image URL" autocomplete="off" />
+
+    <button type="submit">
+      {{ model.productId === 0 ? "Add Product" : "Update Product" }}
+    </button>
+    <button type="button" (click)="resetForm()">Clear</button>
+  </form>
+
+  <!-- Product List -->
+  <table *ngIf="products.length > 0">
+    <thead>
+      <tr>
+        <th>Sr.No</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Image</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ product.name }}</td>
+        <td>{{ product.description }}</td>
+        <td>{{ product.price }}</td>
+        <td>{{ product.quantity }}</td>
+        <td>
+  <img [src]="product.imageUrl" alt="{{ product.name }}" width="60" height="60" *ngIf="product.imageUrl; else noImage" />
+  <ng-template #noImage><span style="color: gray;">No Image</span></ng-template>
+</td>
+
+        <td>
+          <button class="action-button edit-btn" (click)="editProduct(product)">
+            ✏️ Edit
+          </button>
+          <button
+            class="action-button delete-btn"
+            (click)="deleteProduct(product)"
+          >
+            🗑️ Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- No Products Message -->
+  <p *ngIf="products.length === 0" style="margin-top: 10px; color: gray">
+    No products available. Please add a product.
+  </p>
+</div>
